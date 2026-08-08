@@ -1,7 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Claude Cloud sets CLAUDE_CODE_REMOTE from container bootstrap onward, so it is
+# present for setup scripts. CLAUDECODE=1 is not usable here: the claude process
+# sets it on itself, so it is absent while the setup script runs.
+require_claude_cloud() {
+  [ -n "${ALLOW_ANY_ENV:-}" ] && return 0
+  [ -n "${CLAUDE_CODE_REMOTE:-}" ] && return 0
+
+  cat >&2 <<'EOF'
+error: this script only runs inside a Claude Cloud environment.
+
+  CLAUDE_CODE_REMOTE is not set, so this looks like a local machine. Running
+  here would overwrite ~/.claude/CLAUDE.md and merge into ~/.claude/skills.
+
+  Re-run with ALLOW_ANY_ENV=1 if you really mean to.
+EOF
+  return 3
+}
+
 main() {
+  require_claude_cloud
+
   local repo="${TEMPLATE_REPO:-narze/claude-cloud-init}"
   local dest="${DEST:-$HOME/.claude}"
   local ref="${TEMPLATE_REF:-}"
