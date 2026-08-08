@@ -4,6 +4,7 @@ These are common instructions for narze's agents across all scenarios.
 
 ## Rules & Guidelines
 
+- ALWAYS END MESSAGE WITH ✨
 - Never use em dash "—". Use plain dash "-" instead
 - Commit often & prefer small commits
 - Embrace TDD practices
