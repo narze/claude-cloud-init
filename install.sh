@@ -57,7 +57,6 @@ main() {
   mkdir -p "$dest/skills"
 
   [ -f "$tmp/t/CLAUDE.md" ] && cp -a "$tmp/t/CLAUDE.md" "$dest/CLAUDE.md"
-  [ -f "$tmp/t/skills-lock.json" ] && cp -a "$tmp/t/skills-lock.json" "$dest/skills-lock.json"
   [ -d "$tmp/t/.agents/skills" ] && cp -a "$tmp/t/.agents/skills/." "$dest/skills/"
 
   echo "> seeded $dest from $url"

@@ -20,8 +20,7 @@ The setup script runs on each new session, before Claude Code launches.
 | Source | Lands at | What it is |
 | --- | --- | --- |
 | `CLAUDE.md` | `~/.claude/CLAUDE.md` | Global agent instructions, applied to every project |
-| `.agents/skills/*` | `~/.claude/skills/*` | 25 skills (see `skills-lock.json` for upstream sources) |
-| `skills-lock.json` | `~/.claude/skills-lock.json` | Pins each skill to its upstream repo and content hash |
+| `.agents/skills/*` | `~/.claude/skills/*` | 25 skills (see [`skills-lock.json`](skills-lock.json) in this repo for upstream sources) |
 
 `~/.claude/skills` is merged, not replaced, so skills already provided by the
 harness (`docx`, `pptx`, `pdf`, `xlsx`, ...) survive alongside these.
@@ -97,9 +96,9 @@ Requires `git`. The installer clones rather than downloading a tarball, because
 sandboxed agent proxies commonly permit git traffic while rejecting
 `codeload.github.com` with a 403.
 
-`install.sh` copies `CLAUDE.md`, `skills-lock.json`, and `.agents/skills/*`
-explicitly rather than copying the whole clone, so it doesn't depend on
-`.claude/skills`, the repo's own local-dev symlinks into `.agents/skills`.
+`install.sh` copies `CLAUDE.md` and `.agents/skills/*` explicitly rather than
+copying the whole clone, so it doesn't depend on `.claude/skills`, the repo's
+own local-dev symlinks into `.agents/skills`.
 
 Piping a remote script to `bash` runs whatever that URL currently serves. Read
 [`install.sh`](install.sh) before trusting it, and pin `TEMPLATE_REF` if you want
