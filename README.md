@@ -19,14 +19,15 @@ The setup script runs on each new session, before Claude Code launches.
 
 | Source | Lands at | What it is |
 | --- | --- | --- |
-| `CLAUDE.md` | `~/.claude/CLAUDE.md` | Global agent instructions, applied to every project |
+| `CLAUDE.template.md` | `~/.claude/CLAUDE.md` | Global agent instructions, applied to every project |
 | `.agents/skills/*` | `~/.claude/skills/*` | 25 skills (see [`skills-lock.json`](skills-lock.json) in this repo for upstream sources) |
 
 `~/.claude/skills` is merged, not replaced, so skills already provided by the
 harness (`docx`, `pptx`, `pdf`, `xlsx`, ...) survive alongside these.
 
-`CLAUDE.md` **is** overwritten on every run. If you edit it in a live session,
-copy the change back into this repo or the next session will revert it.
+`~/.claude/CLAUDE.md` **is** overwritten on every run. If you edit it in a live
+session, copy the change back into `CLAUDE.template.md` in this repo or the
+next session will revert it.
 
 ## Configuration
 
@@ -56,8 +57,8 @@ curl -fsSL .../install.sh | TEMPLATE_REF=v1.2.0 bash
 ## Using your own template
 
 Any repo works as a template, as long as it has skills under `.agents/skills/`
-and, optionally, a `CLAUDE.md` at the root. Fork this one or start from scratch,
-then point `TEMPLATE_REPO` at it.
+and, optionally, a `CLAUDE.template.md` at the root. Fork this one or start
+from scratch, then point `TEMPLATE_REPO` at it.
 
 ## Running outside Claude Cloud
 
@@ -96,9 +97,9 @@ Requires `git`. The installer clones rather than downloading a tarball, because
 sandboxed agent proxies commonly permit git traffic while rejecting
 `codeload.github.com` with a 403.
 
-`install.sh` copies `CLAUDE.md` and `.agents/skills/*` explicitly rather than
-copying the whole clone, so it doesn't depend on `.claude/skills`, the repo's
-own local-dev symlinks into `.agents/skills`.
+`install.sh` copies `CLAUDE.template.md` (as `CLAUDE.md`) and `.agents/skills/*`
+explicitly rather than copying the whole clone, so it doesn't depend on
+`.claude/skills`, the repo's own local-dev symlinks into `.agents/skills`.
 
 Piping a remote script to `bash` runs whatever that URL currently serves. Read
 [`install.sh`](install.sh) before trusting it, and pin `TEMPLATE_REF` if you want
