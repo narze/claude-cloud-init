@@ -53,10 +53,12 @@ main() {
 
   echo "> cloning $url${ref:+ ($ref)}"
   git clone "${clone_args[@]}" "$url" "$tmp/t"
-  rm -rf "$tmp/t/.git"
 
-  mkdir -p "$dest"
-  cp -aL "$tmp/t/." "$dest/"
+  mkdir -p "$dest/skills"
+
+  [ -f "$tmp/t/CLAUDE.md" ] && cp -a "$tmp/t/CLAUDE.md" "$dest/CLAUDE.md"
+  [ -f "$tmp/t/skills-lock.json" ] && cp -a "$tmp/t/skills-lock.json" "$dest/skills-lock.json"
+  [ -d "$tmp/t/.agents/skills" ] && cp -a "$tmp/t/.agents/skills/." "$dest/skills/"
 
   echo "> seeded $dest from $url"
 }
