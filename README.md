@@ -15,7 +15,7 @@ The setup script runs on each new session, before Claude Code launches.
 
 ## What it installs
 
-Everything in this repo is copied into `~/.claude`:
+`install.sh` copies these paths from this repo into `~/.claude`:
 
 | Source | Lands at | What it is |
 | --- | --- | --- |
@@ -95,9 +95,11 @@ curl -fsSL .../install.sh | ALLOW_ANY_ENV=1 DEST=/tmp/claude-test bash
 
 Requires `git`. The installer clones rather than downloading a tarball, because
 sandboxed agent proxies commonly permit git traffic while rejecting
-`codeload.github.com` with a 403, and because tarball extraction mangles this
-repo's relative symlinks (`skills` and `.claude/skills` both point into
-`.agents/skills`).
+`codeload.github.com` with a 403.
+
+`install.sh` copies `CLAUDE.md`, `skills-lock.json`, and `.agents/skills/*`
+explicitly rather than copying the whole clone, so it doesn't depend on
+`.claude/skills`, the repo's own local-dev symlinks into `.agents/skills`.
 
 Piping a remote script to `bash` runs whatever that URL currently serves. Read
 [`install.sh`](install.sh) before trusting it, and pin `TEMPLATE_REF` if you want
