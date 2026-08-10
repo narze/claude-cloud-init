@@ -13,7 +13,7 @@ setup() {
   DEST="$WORKDIR/dest"
 
   mkdir -p "$FIXTURE_REPO/.agents/skills/example-skill"
-  echo "# Fixture CLAUDE.md" >"$FIXTURE_REPO/CLAUDE.md"
+  echo "# Fixture CLAUDE.md" >"$FIXTURE_REPO/CLAUDE.template.md"
   echo "example skill" >"$FIXTURE_REPO/.agents/skills/example-skill/SKILL.md"
   echo '{"version":1}' >"$FIXTURE_REPO/skills-lock.json"
   ln -s .agents/skills "$FIXTURE_REPO/skills"
@@ -48,12 +48,12 @@ teardown() {
   [ -f "$DEST/CLAUDE.md" ]
 }
 
-@test "installs CLAUDE.md, skills, and skills-lock.json into DEST" {
+@test "installs CLAUDE.md and skills into DEST, but not skills-lock.json" {
   run env ALLOW_ANY_ENV=1 bash "$INSTALL_SH" "$FIXTURE_URL" "$DEST"
   [ "$status" -eq 0 ]
   [ "$(cat "$DEST/CLAUDE.md")" = "# Fixture CLAUDE.md" ]
   [ -f "$DEST/skills/example-skill/SKILL.md" ]
-  [ -f "$DEST/skills-lock.json" ]
+  [ ! -e "$DEST/skills-lock.json" ]
 }
 
 @test "merges into an existing DEST/skills instead of replacing it" {
@@ -109,7 +109,7 @@ teardown() {
 
 @test "installs a specific TEMPLATE_REF" {
   git -C "$FIXTURE_REPO" -c user.email=test@example.com -c user.name=test checkout -qb other-branch
-  echo "# Other branch CLAUDE.md" >"$FIXTURE_REPO/CLAUDE.md"
+  echo "# Other branch CLAUDE.md" >"$FIXTURE_REPO/CLAUDE.template.md"
   git -C "$FIXTURE_REPO" -c user.email=test@example.com -c user.name=test commit -qam "other branch"
 
   run env ALLOW_ANY_ENV=1 TEMPLATE_REF=other-branch bash "$INSTALL_SH" "$FIXTURE_URL" "$DEST"
