@@ -1,0 +1,24 @@
+name: Test install script
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - install.sh
+      - tests/**
+      - .github/workflows/test-install.yml
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bats
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bats
+
+      - name: Run install.sh test suite
+        run: bats tests/install.bats
