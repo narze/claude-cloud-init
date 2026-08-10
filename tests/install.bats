@@ -123,3 +123,29 @@ teardown() {
   [ -f "$DEST/skills/example-skill/SKILL.md" ]
   [ ! -L "$DEST/skills" ]
 }
+
+@test "fetches CLAUDE.md from CLAUDE_MD_URL instead of CLAUDE.template.md" {
+  local external_md="$WORKDIR/external-CLAUDE.md"
+  echo "# External CLAUDE.md" >"$external_md"
+
+  run env ALLOW_ANY_ENV=1 CLAUDE_MD_URL="file://$external_md" bash "$INSTALL_SH" "$FIXTURE_URL" "$DEST"
+  [ "$status" -eq 0 ]
+  [ "$(cat "$DEST/CLAUDE.md")" = "# External CLAUDE.md" ]
+  [ -f "$DEST/skills/example-skill/SKILL.md" ]
+}
+
+@test "fails with a clear error when curl is missing and CLAUDE_MD_URL is set" {
+  local jail="$WORKDIR/jail-bin-no-curl"
+  mkdir -p "$jail"
+  for tool in bash sh git; do
+    local path
+    path="$(command -v "$tool")" || continue
+    ln -s "$path" "$jail/$tool"
+  done
+
+  run env -i PATH="$jail" HOME="$HOME" ALLOW_ANY_ENV=1 CLAUDE_MD_URL="file:///does/not/matter" \
+    bash "$INSTALL_SH" "$FIXTURE_URL" "$DEST"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"curl is required"* ]]
+  [ ! -e "$DEST" ]
+}
