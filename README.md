@@ -26,8 +26,8 @@ The setup script runs on each new session, before Claude Code launches.
 harness (`docx`, `pptx`, `pdf`, `xlsx`, ...) survive alongside these.
 
 `~/.claude/CLAUDE.md` **is** overwritten on every run. If you edit it in a live
-session, copy the change back into `CLAUDE.template.md` in this repo or the
-next session will revert it.
+session, copy the change back into `CLAUDE.template.md` in this repo (or your
+`CLAUDE_MD_URL` source, if you're using one) or the next session will revert it.
 
 ## Configuration
 
@@ -38,6 +38,7 @@ All optional. Positional arguments take precedence over environment variables.
 | `TEMPLATE_REPO` | `narze/claude-cloud-init` | Template to install from. Accepts `owner/repo` or any git URL |
 | `TEMPLATE_REF` | default branch | Branch or tag to install |
 | `DEST` | `$HOME/.claude` | Where to install |
+| `CLAUDE_MD_URL` | unset | Fetch `CLAUDE.md` from this URL instead of `CLAUDE.template.md` in `TEMPLATE_REPO` |
 | `ALLOW_ANY_ENV` | unset | Set to `1` to skip the Claude Cloud check |
 
 ```bash
@@ -52,6 +53,11 @@ curl -fsSL .../install.sh | bash -s -- https://gitlab.com/you/tpl.git ~/.claude
 
 # Pin to a tag
 curl -fsSL .../install.sh | TEMPLATE_REF=v1.2.0 bash
+
+# Pull CLAUDE.md from any raw URL instead of TEMPLATE_REPO's CLAUDE.template.md
+# (skills still come from TEMPLATE_REPO)
+curl -fsSL .../install.sh | \
+  CLAUDE_MD_URL=https://raw.githubusercontent.com/you/dotfiles/main/AGENTS.md bash
 ```
 
 ## Using your own template
@@ -87,7 +93,7 @@ curl -fsSL .../install.sh | ALLOW_ANY_ENV=1 DEST=/tmp/claude-test bash
 | Code | Meaning |
 | --- | --- |
 | `0` | Installed |
-| `1` | `git` not found |
+| `1` | `git` not found, or `curl` not found while `CLAUDE_MD_URL` is set |
 | `2` | `TEMPLATE_REPO` is not `owner/repo` or a git URL |
 | `3` | Not a Claude Cloud environment (see above) |
 

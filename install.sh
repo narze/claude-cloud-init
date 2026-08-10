@@ -25,6 +25,7 @@ main() {
   local repo="${TEMPLATE_REPO:-narze/claude-cloud-init}"
   local dest="${DEST:-$HOME/.claude}"
   local ref="${TEMPLATE_REF:-}"
+  local claude_md_url="${CLAUDE_MD_URL:-}"
 
   [ "$#" -ge 1 ] && repo="$1"
   [ "$#" -ge 2 ] && dest="$2"
@@ -44,6 +45,13 @@ main() {
     return 1
   }
 
+  if [ -n "$claude_md_url" ]; then
+    command -v curl >/dev/null 2>&1 || {
+      echo "error: curl is required to fetch CLAUDE_MD_URL" >&2
+      return 1
+    }
+  fi
+
   local tmp
   tmp="$(mktemp -d)"
   trap "rm -rf $(printf '%q' "$tmp")" EXIT
@@ -56,7 +64,12 @@ main() {
 
   mkdir -p "$dest/skills"
 
-  [ -f "$tmp/t/CLAUDE.template.md" ] && cp -a "$tmp/t/CLAUDE.template.md" "$dest/CLAUDE.md"
+  if [ -n "$claude_md_url" ]; then
+    echo "> fetching CLAUDE.md from $claude_md_url"
+    curl -fsSL "$claude_md_url" -o "$dest/CLAUDE.md"
+  else
+    [ -f "$tmp/t/CLAUDE.template.md" ] && cp -a "$tmp/t/CLAUDE.template.md" "$dest/CLAUDE.md"
+  fi
   [ -d "$tmp/t/.agents/skills" ] && cp -a "$tmp/t/.agents/skills/." "$dest/skills/"
 
   echo "> seeded $dest from $url"
