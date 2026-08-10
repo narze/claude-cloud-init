@@ -20,7 +20,7 @@ The setup script runs on each new session, before Claude Code launches.
 | Source | Lands at | What it is |
 | --- | --- | --- |
 | `CLAUDE.template.md` | `~/.claude/CLAUDE.md` | Global agent instructions, applied to every project |
-| `.agents/skills/*` | `~/.claude/skills/*` | 31 skills (see [`skills-lock.json`](skills-lock.json) in this repo for upstream sources) |
+| `.agents/skills/*` | `~/.claude/skills/*` | 29 skills (see [`skills-lock.json`](skills-lock.json) in this repo for upstream sources) |
 
 `~/.claude/skills` is merged, not replaced, so skills already provided by the
 harness (`docx`, `pptx`, `pdf`, `xlsx`, ...) survive alongside these.

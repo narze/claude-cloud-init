@@ -91,18 +91,6 @@
       "skillPath": "skills/engineering/prototype/SKILL.md",
       "computedHash": "73862de6cd32acf30799bfb2220357b96c1a58ab0e3d01126b769fd659d6555a"
     },
-    "qwen-agent": {
-      "source": "thananon/9arm-skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/qwen-agent/SKILL.md",
-      "computedHash": "237e1a708655b68ab8066455d16b1e14ccba55ab682764e21843f2e47848f0a3"
-    },
-    "qwenchance": {
-      "source": "thananon/9arm-skills",
-      "sourceType": "github",
-      "skillPath": "skills/productivity/qwenchance/SKILL.md",
-      "computedHash": "116b0e8cc306b2ee891dd9a70160842528420153273e0109933224b49c22adf8"
-    },
     "research": {
       "source": "mattpocock/skills",
       "sourceType": "github",
