@@ -155,7 +155,7 @@
       "source": "cursor/plugins",
       "sourceType": "github",
       "skillPath": "pstack/skills/unslop/SKILL.md",
-      "computedHash": "2e57ee5eac607dd836feb9cbb1bfa92bfe3cbb50c195dfcc3ae021e591efefe4"
+      "computedHash": "eca0ad9fa3a3867c83f3aaf3a058e247a569c8976a68ca423a569b93eb86de5d"
     },
     "wait-what": {
       "source": "mattpocock/skills",
